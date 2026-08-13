@@ -2,7 +2,9 @@
 
 A Retrieval-Augmented Generation (RAG) chatbot built with Python, Streamlit, LangChain, ChromaDB, and multiple LLM providers. The app lets you upload documents, convert them into embeddings, store them in a vector database, and ask questions about your content using conversational AI.
 
-## Overview
+## Workflow
+
+![RAG workflow architecture](data/docs/RAG_architecture.png)
 
 This project is designed to help you chat with your own data instead of relying only on a model’s general knowledge. It follows the standard RAG flow:
 
