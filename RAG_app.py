@@ -43,36 +43,158 @@ st.set_page_config(
 
 st.markdown(
     """
-    <style>
-    .stApp { background: #f7f8fc; }
-    [data-testid="stSidebar"] { background: #111827; }
-    [data-testid="stSidebar"] * { color: #f9fafb !important; }
-    .hero {
-        padding: 1.2rem 1.4rem;
-        border-radius: 18px;
-        background: linear-gradient(135deg,#111827,#273449);
-        color: white;
-        margin-bottom: 1rem;
-    }
-    .hero h1 { margin: 0; font-size: 2rem; }
-    .hero p { margin: .4rem 0 0; opacity: .82; }
-    .metric-card {
-        padding: 1rem;
-        border: 1px solid #e5e7eb;
-        border-radius: 14px;
-        background: white;
-        text-align: center;
-    }
-    .source-card {
-        padding: .75rem 1rem;
-        border-left: 4px solid #6366f1;
-        background: white;
-        border-radius: 8px;
-        margin: .4rem 0;
-    }
-    .small-muted { color: #6b7280; font-size: .85rem; }
-    </style>
-    """,
+<style>
+/* DARK RAG STUDIO */
+
+.stApp {
+    background: #0b1120;
+    color: #e5e7eb;
+}
+
+[data-testid="stAppViewContainer"] {
+    background: #0b1120;
+}
+
+[data-testid="stHeader"] {
+    background: rgba(11, 17, 32, 0.95);
+}
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background: #111827;
+    border-right: 1px solid #263244;
+}
+
+[data-testid="stSidebar"] * {
+    color: #e5e7eb !important;
+}
+
+[data-testid="stSidebar"] input,
+[data-testid="stSidebar"] textarea,
+[data-testid="stSidebar"] [data-baseweb="select"] > div {
+    background: #1f2937 !important;
+    color: #f9fafb !important;
+    border-color: #374151 !important;
+}
+
+/* Hero */
+.hero {
+    padding: 1.4rem 1.5rem;
+    border: 1px solid #293548;
+    border-radius: 18px;
+    background: linear-gradient(
+        135deg,
+        #111827 0%,
+        #172554 100%
+    );
+    color: #f9fafb;
+    margin-bottom: 1rem;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 2rem;
+    color: #ffffff;
+}
+
+.hero p {
+    margin: 0.4rem 0 0;
+    color: #cbd5e1;
+}
+
+/* Metric cards */
+.metric-card {
+    padding: 1rem;
+    border: 1px solid #293548;
+    border-radius: 14px;
+    background: #111827;
+    color: #f9fafb;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.metric-card b {
+    color: #f8fafc;
+}
+
+.small-muted {
+    color: #94a3b8;
+    font-size: 0.85rem;
+}
+
+/* Chat */
+[data-testid="stChatMessage"] {
+    background: #111827;
+    border: 1px solid #263244;
+    border-radius: 14px;
+    margin-bottom: 0.7rem;
+}
+
+[data-testid="stChatInput"] {
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 14px;
+}
+
+[data-testid="stChatInput"] textarea {
+    color: #f9fafb !important;
+    background: #111827 !important;
+}
+
+[data-testid="stChatInput"] textarea::placeholder {
+    color: #94a3b8 !important;
+}
+
+/* Inputs */
+.stTextInput input,
+.stNumberInput input {
+    color: #f9fafb !important;
+    background: #111827 !important;
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    background: #111827;
+    border: 1px solid #374151;
+    border-radius: 12px;
+}
+
+/* Expanders */
+[data-testid="stExpander"] {
+    background: #111827;
+    border: 1px solid #293548;
+    border-radius: 12px;
+}
+
+/* Source cards */
+.source-card {
+    padding: 0.75rem 1rem;
+    border-left: 4px solid #818cf8;
+    background: #111827;
+    color: #e5e7eb;
+    border-radius: 8px;
+    margin: 0.4rem 0;
+}
+
+/* Alerts */
+[data-testid="stAlert"] {
+    background: #111827;
+    color: #e5e7eb;
+}
+
+/* Dividers */
+hr {
+    border-color: #263244 !important;
+}
+
+/* Code */
+code {
+    color: #c4b5fd !important;
+    background: #111827 !important;
+}
+</style>
+""",
     unsafe_allow_html=True,
 )
 
