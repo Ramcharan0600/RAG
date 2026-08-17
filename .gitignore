@@ -21,3 +21,16 @@ Thumbs.db
 
 # Generated app data
 data/tmp/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.env
+
+# RAG generated data
+data/tmp/
+data/vector_stores/
+
+# Local backup
+requirements.txt.old
