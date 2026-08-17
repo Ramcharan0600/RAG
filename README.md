@@ -1,155 +1,195 @@
-# RAG Chatbot with LangChain
+# 🧠 RAG Studio
 
-A Retrieval-Augmented Generation (RAG) chatbot built with Python, Streamlit, LangChain, ChromaDB, and multiple LLM providers. The app lets you upload documents, convert them into embeddings, store them in a vector database, and ask questions about your content using conversational AI.
+A modern conversational Retrieval-Augmented Generation (RAG) application built with **Streamlit, LangChain, ChromaDB, OpenAI and Google Gemini**.
 
-## Workflow
+The application lets you upload PDF, TXT, DOCX and CSV files, build a persistent vector knowledge base, and chat with your documents using conversational retrieval and source-aware answers.
 
-![RAG workflow architecture](data/docs/RAG_architecture.png)
+## ✨ What changed
 
-This project is designed to help you chat with your own data instead of relying only on a model’s general knowledge. It follows the standard RAG flow:
+The original project used a heavily pinned 2024 dependency stack and an older LangChain architecture. This version simplifies and modernizes the application around a stable LangChain 0.3 stack.
 
-1. Upload local documents (.txt, .pdf, .csv, .docx)
-2. Load and split them into chunks
-3. Generate embeddings with the selected provider
-4. Store them in a Chroma vector database
-5. Retrieve the most relevant chunks for a question
-6. Send the context and question to an LLM for a grounded answer
-7. Keep the conversation memory for follow-up questions
+Key improvements:
 
-The app supports:
+- Modern LangChain retrieval architecture
+- No dependency on the deprecated `ConversationalRetrievalChain`
+- OpenAI and Google Gemini providers
+- Persistent Chroma vector stores
+- Conversation-aware question rewriting
+- Similarity retrieval with configurable top-k
+- PDF, TXT, DOCX and CSV ingestion
+- Source document display with page information when available
+- Cleaner Streamlit UI
+- Vector-store metadata to prevent embedding-provider mismatches
+- Session-based API key handling
+- Structure prepared for future multimodal / Computer Vision RAG
 
-- OpenAI models
-- Google Generative AI models
-- Hugging Face models
-- Multiple retriever strategies:
-  - vectorstore-backed retriever
-  - contextual compression retriever
-  - Cohere reranker (optional)
+## 🔄 Architecture
 
-## How the project works
-
-The application flow in this repo is:
-
-- The user selects an LLM provider and API key in the sidebar.
-- The user uploads documents in the Streamlit UI.
-- Files are stored in the temporary data directory.
-- LangChain loaders read the uploaded files.
-- A text splitter breaks the documents into smaller chunks.
-- Embeddings are created with the selected provider.
-- ChromaDB creates or loads a persistent vector store.
-- A retriever fetches the most relevant document chunks for each question.
-- A `ConversationalRetrievalChain` combines chat memory, retrieved context, and the LLM response.
-- The app displays the answer and the source documents used.
-
-This behavior is implemented in [RAG_app.py](RAG_app.py) and the application is run through Streamlit.
-
-## Repository structure
-
-- [RAG_app.py](RAG_app.py) — main Streamlit chatbot application
-- [requirements.txt](requirements.txt) — Python dependencies
-- [docker-compose.yml](docker-compose.yml) — Docker Compose setup
-- [Dockerfile](Dockerfile) — container image for the app
-- [RAG_notebook.ipynb](RAG_notebook.ipynb) — notebook version of the project workflow
-- [data/](data/) — uploaded files and persisted Chroma vector stores
-
-## Prerequisites
-
-- Python 3.10+
-- A valid API key for one of the supported providers:
-  - OpenAI
-  - Google Generative AI
-  - Hugging Face
-- Optional: Cohere API key if you want the reranker retriever
-
-## Local setup
-
-From the project root:
-
-```bash
-python -m venv langchain_env
+```text
+                         RAG STUDIO
+                             │
+              ┌──────────────┴──────────────┐
+              │                             │
+         DOCUMENT INGESTION              CHAT
+              │                             │
+       File Upload / Loaders        Question + History
+              │                             │
+         Text Chunking             History-aware Retriever
+              │                             │
+          Embeddings                    ChromaDB
+              │                             │
+           ChromaDB                 Relevant Chunks
+                                            │
+                                            ▼
+                                     Stuff Documents
+                                            │
+                                            ▼
+                                           LLM
+                                            │
+                                            ▼
+                                  Answer + Source Docs
 ```
 
-On Windows PowerShell:
+## 🧰 Tech stack
+
+| Component | Technology |
+|---|---|
+| UI | Streamlit |
+| Orchestration | LangChain |
+| Vector database | ChromaDB |
+| LLM provider 1 | OpenAI |
+| LLM provider 2 | Google Gemini |
+| Embeddings | OpenAI / Google |
+| PDF | PyPDF |
+| DOCX | docx2txt |
+| CSV | LangChain CSVLoader |
+| Deployment | Docker-compatible |
+
+## 📁 Project structure
+
+```text
+RAG/
+├── RAG_app.py
+├── requirements.txt
+├── Dockerfile
+├── docker-compose.yml
+├── RAG_notebook.ipynb
+├── data/
+│   ├── tmp/
+│   └── vector_stores/
+└── README.md
+```
+
+## 🚀 Local setup
+
+### 1. Create a virtual environment
+
+Python 3.10 or 3.11 is recommended.
+
+Windows PowerShell:
 
 ```powershell
-.\langchain_env\Scripts\Activate.ps1
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
 ```
 
-Then install dependencies:
+macOS/Linux:
 
 ```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+### 2. Install dependencies
+
+```bash
+python -m pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-Start the app:
+### 3. Configure an API key
+
+You can enter the key directly in the Streamlit sidebar, or create a `.env` file:
+
+```env
+OPENAI_API_KEY=your_openai_key
+GOOGLE_API_KEY=your_google_key
+```
+
+Do **not** commit real API keys to GitHub.
+
+### 4. Start the application
 
 ```bash
 streamlit run RAG_app.py
 ```
 
-Open the local URL shown by Streamlit in the browser.
+Then open the local Streamlit URL, normally `http://localhost:8501`.
 
-## Using the app
+## 💬 How to use
 
-1. Choose the LLM provider from the sidebar.
-2. Paste the required API key.
-3. Select a model and adjust temperature/top_p.
-4. Choose a retriever type.
-5. Upload one or more documents.
-6. Create a vectorstore.
-7. Ask a question about the uploaded content.
-8. Review the answer along with the source documents that were retrieved.
+1. Select **OpenAI** or **Google**.
+2. Enter the API key.
+3. Upload PDF/TXT/DOCX/CSV documents.
+4. Give the knowledge base a name.
+5. Click **Build Knowledge Base**.
+6. Wait for chunking, embedding and indexing to finish.
+7. Ask questions in the chat box.
+8. Inspect the source cards under each answer.
+9. Later, load the saved knowledge base from the sidebar without re-uploading the documents.
 
-## Docker setup
+## 🧠 RAG workflow
 
-This project includes a Docker configuration for running the app in a container.
-
-Build and run:
-
-```bash
-docker-compose up --build
-```
-
-The app is exposed on:
+### Indexing
 
 ```text
-http://localhost:8501
+Documents
+   ↓
+LangChain loaders
+   ↓
+RecursiveCharacterTextSplitter
+   ↓
+Embedding model
+   ↓
+ChromaDB
 ```
 
-## Environment notes
+### Querying
 
-- The app stores vector stores under the `data/vector_stores` folder.
-- Temporary uploaded files are processed from the `data/tmp` folder.
-- If you upload a new dataset, the app creates a new Chroma database for it.
-- You can also reopen an existing stored vector database from the UI.
+```text
+Question + conversation history
+              ↓
+History-aware question rewriting
+              ↓
+Chroma similarity retrieval
+              ↓
+Relevant document chunks
+              ↓
+Stuff-document answer chain
+              ↓
+LLM
+              ↓
+Grounded answer + sources
+```
 
-## Dependencies
+## ⚠️ Important compatibility rule
 
-The project uses libraries such as:
+A vector store must be loaded with the same embedding provider used when it was created. For example, a store created using OpenAI embeddings should be loaded with OpenAI selected in the UI. The app records this information in `rag_metadata.json` and blocks incompatible loads.
 
-- LangChain
-- ChromaDB
-- Streamlit
-- OpenAI SDK
-- Google Generative AI SDK
-- Hugging Face integrations
-- pypdf / docx2txt / CSV loaders
+## 🔐 API key safety
 
-See [requirements.txt](requirements.txt) for the full dependency list.
+Use environment variables or the Streamlit UI. Never hard-code keys in `RAG_app.py`, commit them to Git, or paste them into public files.
 
-## Notes
+If a key has ever been committed to a public repository, revoke it and create a new one.
 
-This repo is a practical implementation of a document-based conversational assistant using retrieval augmentation. It is useful for:
+## 🔭 Next stage: Computer Vision RAG
 
-- internal knowledge base assistants
-- document Q&A bots
-- private data chat interfaces
-- prototype RAG systems for product demos and learning
+The current architecture is intentionally suitable for a future multimodal extension:
 
-## License
+```text
+Text query ────────┐
+                   ├──→ Multimodal retrieval → Chroma → Multimodal LLM
+Image ─→ Vision ───┘
+```
 
-This project is provided as-is for educational and development use.
-
-## Repository
-
-https://github.com/Ramcharan0600/RAG.git
+The next version can support image understanding, image-to-text retrieval, multimodal document ingestion, and image + text questions without throwing away the current RAG foundation.
